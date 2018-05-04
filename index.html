@@ -1,0 +1,94 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>支付宝和信用卡利息</title>
+</head>
+<body>
+    <h4>说明：利率请输入小数点，列：0.045%=0.00045；每个月都是按三十天计算</h4>
+    <p>支付宝/微信等</p>
+    <input id="num1" type="number" placeholder="总额" >
+    <input id="num2" type="number" placeholder="分期数">
+    <input id="num3" type="number" placeholder="日利率">
+    <p id="info1"></p>
+    <p id="info2"></p>
+    <p id="info"></p>
+    <button id="b1">计算</button>
+    <p>信用卡：</p>
+    <input id="num4" type="number" placeholder="总额" >
+    <input id="num5" type="number" placeholder="分期数">
+    <input id="num6" type="number" placeholder="手续费率">
+    <p id="info3"></p>
+    <p id="info4"></p>
+    <p id="info5"></p>
+    <p id="info6"></p>
+    <button id="b2">计算</button>
+    <script>
+        // 支付宝
+        let p1 = document.getElementById('info1');
+        let p2 = document.getElementById('info2');
+        let pp = document.getElementById('info');
+        let butt1 = document.getElementById("b1");
+        // 信用卡
+        let p3 = document.getElementById('info3');
+        let p4 = document.getElementById('info4');
+        let p5 = document.getElementById('info5');
+        let p6 = document.getElementById('info6');
+        let butt2 = document.getElementById("b2");
+        // 支付宝
+        butt1.onclick = function() {
+           let total = Number(document.getElementById('num1').value); //总额
+           let staging = Number(document.getElementById('num2').value); //分期数
+           let dailyRate = Number(document.getElementById('num3').value); //日利率
+           let needTotal = total; // 还需要还钱总额
+           let InterestTotal = 0; //利息总额
+           let allTotal = 0; //本金加全部利息
+           let arr = []; //每月还款
+           function calculation(){
+                if(needTotal<=0){//已经还清
+                    if(total === 0 || dailyRate === 0 || staging === 0){
+                        alert('输入不能为空');
+                        return;
+                    }
+                    allTotal = total + InterestTotal
+                    p1.innerHTML  ="需还总额："+ allTotal.toFixed(2);
+                    p2.innerHTML  ="利息总额："+ InterestTotal.toFixed(2);
+                    pp.innerHTML = "还款明细："+ arr;
+                    console.log(typeof InterestTotal)
+                } else {//未还清
+                    if(total === 0 || dailyRate === 0 || staging === 0){
+                        alert('输入不能为空');
+                        return;
+                    }
+                    InterestTotal = InterestTotal + needTotal*30*dailyRate;
+                    arr.push((total/staging+needTotal*30*dailyRate).toFixed(2));
+                    needTotal = needTotal - total/staging;
+                    calculation();
+                }
+           };
+           calculation();
+        }
+        // 信用卡
+        butt2.onclick = function() {
+           let total = Number(document.getElementById('num4').value); //总额
+           let staging = Number(document.getElementById('num5').value); //分期数
+           let dailyRate = Number(document.getElementById('num6').value); //手续费率
+           if(total === 0 || dailyRate === 0 || staging === 0){
+              alert('输入不能为空');
+                return;
+            };           
+           let InterestTotal = 0; //利息总额
+           let allTotal = 0; //本金加全部利息
+           InterestTotal = total * dailyRate * staging;
+           allTotal = total + InterestTotal;
+           let month = total * dailyRate;
+           let monthAll = total/staging + month;
+           p3.innerHTML  ="需还总额："+ allTotal.toFixed(2);
+           p4.innerHTML  ="手续费率总额："+ InterestTotal.toFixed(2);
+           p5.innerHTML  ="每月手续费："+ month.toFixed(2);
+           p6.innerHTML  ="每月应还："+ monthAll.toFixed(2);
+        }        
+    </script>
+</body>
+</html>
