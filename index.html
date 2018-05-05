@@ -4,21 +4,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>支付宝和信用卡利息</title>
+    <style>
+        input,select{
+            width: 100px;
+            height: 30px;
+            vertical-align:middle;
+            border:1px solid #eeeeee;
+            color: #232323;
+        }
+    </style>
 </head>
 <body>
     <h4>说明：利率请输入小数点，列：0.045%=0.00045；每个月都是按三十天计算</h4>
     <p>支付宝/微信等</p>
-    <input id="num1" type="number" placeholder="总额" >
-    <input id="num2" type="number" placeholder="分期数">
-    <input id="num3" type="number" placeholder="日利率">
+    <input id="num1" type="number" placeholder="请输入总额" >
+    <select name="12" id="num2">
+        <option value="3">选择3期</option>
+        <option value="6">选择6期</option>
+        <option value="9">选择9期</option>
+        <option value="12">选择12期</option>
+    </select>
+    <input id="num3" type="number" placeholder="请输入日利率">
     <p id="info1"></p>
     <p id="info2"></p>
     <p id="info"></p>
     <button id="b1">计算</button>
     <p>信用卡：</p>
-    <input id="num4" type="number" placeholder="总额" >
-    <input id="num5" type="number" placeholder="分期数">
-    <input id="num6" type="number" placeholder="手续费率">
+    <input id="num4" type="number" placeholder="请输入总额" >
+    <select name="12" id="num5">
+            <option value="3">选择3期</option>
+            <option value="6">选择6期</option>
+            <option value="9">选择9期</option>
+            <option value="12">选择12期</option>
+        </select>
+    <input id="num6" type="number" placeholder="请输入手续费利率">
     <p id="info3"></p>
     <p id="info4"></p>
     <p id="info5"></p>
@@ -51,9 +70,8 @@
             };           
             let principal = (total/staging).toFixed(2);// 每月本金
             for(var i = 0; i<staging; i++){           
-                needTotal = needTotal - principal*i;//剩余应还
-                console.log(needTotal);
                 InterestTotal = InterestTotal + needTotal*30*dailyRate;
+                needTotal = total - principal*(i + 1);//剩余应还
                 arr.push((total/staging+needTotal*30*dailyRate).toFixed(2));//明细
             };
             allTotal = total + InterestTotal; //应还总金额
