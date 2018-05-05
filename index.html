@@ -45,29 +45,21 @@
            let InterestTotal = 0; //利息总额
            let allTotal = 0; //本金加全部利息
            let arr = []; //每月还款
-           function calculation(){
-                if(needTotal<=0){//已经还清
-                    if(total === 0 || dailyRate === 0 || staging === 0){
-                        alert('输入不能为空');
-                        return;
-                    }
-                    allTotal = total + InterestTotal
-                    p1.innerHTML  ="需还总额："+ allTotal.toFixed(2);
-                    p2.innerHTML  ="利息总额："+ InterestTotal.toFixed(2);
-                    pp.innerHTML = "还款明细："+ arr;
-                    console.log(typeof InterestTotal)
-                } else {//未还清
-                    if(total === 0 || dailyRate === 0 || staging === 0){
-                        alert('输入不能为空');
-                        return;
-                    }
-                    InterestTotal = InterestTotal + needTotal*30*dailyRate;
-                    arr.push((total/staging+needTotal*30*dailyRate).toFixed(2));
-                    needTotal = needTotal - total/staging;
-                    calculation();
-                }
-           };
-           calculation();
+           if(total === 0 || dailyRate === 0 || staging === 0){
+              alert('输入不能为空');
+              return;
+            };           
+            let principal = (total/staging).toFixed(2);// 每月本金
+            for(var i = 0; i<staging; i++){           
+                needTotal = needTotal - principal*i;//剩余应还
+                console.log(needTotal);
+                InterestTotal = InterestTotal + needTotal*30*dailyRate;
+                arr.push((total/staging+needTotal*30*dailyRate).toFixed(2));//明细
+            };
+            allTotal = total + InterestTotal; //应还总金额
+            p1.innerHTML  ="需还总额："+ allTotal.toFixed(2);
+            p2.innerHTML  ="利息总额："+ InterestTotal.toFixed(2);
+            pp.innerHTML = "还款明细："+ arr;        
         }
         // 信用卡
         butt2.onclick = function() {
